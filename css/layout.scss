@@ -1,0 +1,1035 @@
+*{
+    // border: 1px solid rgb(100, 100, 100) !important;
+    position: relative;
+}
+@import "var";
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
+body{
+  font-family: "Noto Sans TC","PingFang","Microsoft Jheng Hei","蘋方","微軟正黑體","sans-serif";
+}
+
+#page{
+    background: $bgColor 0% 0% no-repeat padding-box;
+    min-height: 100vh;
+    overflow-y: auto;
+    opacity: 1;
+    
+}
+header{
+    width: 100%;
+    // height: 65px;
+    background-color: $white;
+    padding-bottom: 0px;
+    transition: .25s all ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9000;
+    & .title{
+        display: block;
+        // padding-left: 16px;
+        margin: 17px 16px;
+        position: relative;
+        & .logo{
+            background-image: url(../images/index/logo@2x.png);
+            background-size: cover;
+            background-position: center;
+            height: 30px;
+            width: 30px;
+            display: table-cell;   
+            padding-right: 10px;
+        }
+        & > h2{
+            display: table-cell;   
+            vertical-align: middle;
+            text-align: left;
+            font-size:16px ;
+            line-height: 19px;
+            letter-spacing: 0px;
+            color: $SecondaryCVolor;
+            opacity: 1;
+        }
+    }
+    & .btn{
+        margin-right:24px;
+        & > .menubtn{
+            
+            display: block;
+            position: relative;
+            & > label[for="m-ctrl"]{
+                width: 30px;
+                height: 30px;
+                background-clip: content-box;
+                padding: 14px 5px;
+                background-color: transparent;
+                content: " ";
+                position: absolute;
+                transition: .2s all ease-in-out .2s;
+                transform: scale(0.9);
+                top: 50%;
+                left: 50%;
+                margin-top: -15px;
+                margin-left: -15px;
+                z-index: 1;
+                &::before,&::after{
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    width: 100%;
+                    height: 3px;
+                    background-clip: content-box;
+                    background-color: $SecondaryCVolor;
+                    display: block;
+                    content: " ";
+                    padding: 0 2px;
+                    transition: .25s all ease;
+                    margin: 0;
+                }
+                &::before{
+                    transform: translateY(-6px);
+                }
+                &::after{
+                    transform: translateY(6px);
+                    padding-left: 10px;
+                }
+                &:hover{
+                    &::before{
+                        transform: translateY(-8px);
+                    }
+                    &::after{
+                        transform: translateY(8px);
+                    } 
+                    //hover
+                }
+                //label
+            }
+        }
+        //btn
+    }
+    & .directory{
+        display: none;
+        height: 0;
+        opacity: 0;
+        transition: .25s all ease;
+        transform: translateY(-100px);
+        & >p{
+            padding-top: 18px;
+            padding-bottom: 16px;
+            font-size: 16px;
+            line-height: 19px;
+            letter-spacing: 0px;
+            &.active{
+                background-color: rgba($color: $white, $alpha: 0.1);
+            }
+        }
+    }
+    //header
+}
+
+
+#m-ctrl:checked{
+    & ~ * label[for="m-ctrl"]{
+        transform: rotate(-540deg) scale(0.9);
+        // padding: 25px 5px;
+        // background-color: $bgColor;
+        &::before{
+            transform: rotate(135deg);
+            transition-delay: .2s;
+            background-color: $bgColor;
+        }
+        &::after{
+            transform: rotate(45deg);
+            padding-left: 0px;
+            transition-delay: .2s;
+            background-color: $bgColor;
+        }
+        //label[for="m-ctrl"]
+    }
+    & ~ header{
+        background-color:$SecondaryCVolor;
+        color: $bgColor;
+        padding-bottom: 16px;
+        & .title{
+            & > h2{
+                color: $bgColor;
+            }
+        }
+        & .directory{
+            display: block;
+            height: 100%;
+            opacity: 1;
+            transform: translateY(0px);
+            & >p{
+                padding-top: 18px;
+                padding-bottom: 16px;
+                font-size: 16px;
+                line-height: 19px;
+                letter-spacing: 0px;
+                &:hover{
+                    background-color: rgba($color: $white, $alpha: 0.1);
+                }
+            }
+        }
+        //header
+    }
+    //#m-ctrl:checked
+}
+
+
+
+
+main{
+    display: block;
+    margin-top: 64px;
+    min-height: calc(100vh - 66px);    
+    & .Searchbar{
+
+        padding-top: 1rem;
+        & .from{
+            padding-right: 16px;
+            padding-left: 16px;
+            position: relative;
+            min-height: 46px;
+            display: block;
+            width: 100%;
+            & ul{
+                border-radius: 10px;
+                border: 1px solid #34495E33;
+                overflow: hidden;
+                background-color: $white;;
+                position: absolute;
+                z-index: 5;
+                transition: 0.25s all ease;
+                width:calc(100% - 32px);
+                & >.inputbox{
+                    border-bottom: 0px; 
+                    position: relative;
+                    
+                    &  input{
+                        width: 100%;
+                        display: block;
+                        border-radius: 10px;
+                        padding: 11px 16px;
+                        padding-right: 40px;
+                        text-align: left;
+                        font-size: 16px;
+                        line-height: 19px;
+                        letter-spacing: 0px;
+                        color: $SecondaryCVolor;
+                        opacity: 1;
+                        outline: none;
+                    }
+                    //inputbox
+                }
+
+                & li:not(.inputbox){
+                    top: -200px;
+                    display: none;
+                    padding: 12px 24px;
+                    transition: 0.25s all ease;
+                    & .icon-Address{
+                        height: 16px;
+                        width: 11.2px;
+                        display: inline-block;
+                        background-image: url(../images/index/Address.svg);
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        margin-right: 8px;
+                    }
+                    & p.shopname {
+                        display: inline-block;
+                        font-size: 16px;
+                        line-height: 19px;
+                        color: $SecondaryCVolor;
+                        letter-spacing: 0px;
+                    }
+
+                }
+            //ul
+            }
+            & .previouspage{
+                display: block;
+                width: 24px;
+                height: 24px;
+                margin-bottom: -12px;
+                position: absolute;
+                bottom: 50%;
+                right: 12px;
+                z-index: 7;
+                & .icon-left{
+                    display: inline-block;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -12px;
+                    margin-left: -12px;
+                    width: 24px;
+                    height: 24px;
+                    background-image: url(../images/index/ic_location@2x@2x.png);
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+                //previouspage
+                //目前地點icon
+            }
+           
+            & .leftbtn{
+                height: 15px;
+                width: 12px;
+                font-size: 20px;
+                line-height: 20px;
+                position: absolute;
+                transform: scaleY(2.5)scaleX(1.5);
+                top: 50%;
+                margin-top: -20px;
+                margin-left: 6px;
+                left: 16px;
+                opacity: 0;
+                display: none;
+            }
+            & ~ .historical{
+                display: none;
+            }
+
+            &.active{
+                padding-left: 49px;
+                & .leftbtn{
+                    display: inline-block;
+                    opacity: 1;
+                }
+                & .previouspage{
+                    width: 48px;
+                    height: 48px;
+                    margin-top: -24px;
+                    margin-left: -24px;
+                    background-color: $white;
+                    border-radius: 50%;
+                    position: fixed;
+                    bottom: 24px;
+                    right: 16px;
+                    box-shadow: 0px 3px 6px #00000029;
+                    &::before{
+                        display: inline-block;
+                        width: 72px;
+                        content: "使用目前位置";
+                        position: absolute;
+                        right: 48px;
+                        top: 50%;
+                        margin-top: -7px;
+                        margin-right: 8px;
+                        text-align: left;
+                        font-size: 12px;
+                        line-height: 14px;
+                        color: $mainlyBlue;
+                        letter-spacing: 0px;
+                        opacity: 1;
+                    }
+                }
+
+                .del{
+                    display: none;
+                    position: absolute;
+                    top: 50%;
+                    right: 12px;
+                    margin-top: -12px;
+                    margin-left: -12px;
+
+                    z-index: 6;
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    border: 0px;
+
+                    background-color:$SecondaryCVolor;
+                    background-image: url(../images/index/ic_stock_none@2x@2x.png);
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    //del
+                }
+                & ul{
+                    width:calc(100% - 66px);
+                    &.trigger{
+                        top: 0;
+                        display: block;
+                        & >.inputbox{
+                            border-bottom: 1px solid #34495E33;
+                            & .del{
+                                display: inline-block;
+                            }
+                            &  input{
+                                border-radius: 10px 10px 0px 0px;
+                            }
+                        //inputbox
+                        }
+                        & .ovf{
+                            max-height: 200px;
+                            overflow-y: auto;
+                        }
+                        & li:not(.inputbox){
+                            top: 0;
+                            display: block;
+                        }
+                    }
+                }
+            & ~ .historical{
+                display: block;
+                // min-height: 80vh;
+                // padding-bottom: 16px;
+                & .haz-line{
+                    margin-top: 16px;
+                    background-color:$SecondaryCVolor;
+                    opacity: 1;
+                    padding: 5px 16px;
+                    text-align: right;
+                    height: 35px;
+                    width: 100%;
+                    overflow: hidden;
+                    & > h3{
+                        font-size: 12px;
+                        line-height: 25px;
+                        text-align: left;
+                        color: $bgColor;
+                        display: inline-block;
+                        float: left;
+                        vertical-align: middle;
+                    }
+                    & button.reset{
+                        border: 2px solid #FAFAFA;
+                        border-radius: 100px;
+                        padding: 5px 14px 4px;
+                        font-size: 12px;
+                        line-height: 14px;
+                        color: $bgColor;
+                        background-color: inherit;
+                        opacity: 0.8;
+                        outline: none;
+                    }
+                //haz-line
+                }
+                & .historicalitem{
+                    & ul{
+                        & li{
+                            padding: 14px 12px 12px;
+                            border-bottom: 1px solid #34495E33;
+                            & p{
+                                font-size: 14px;
+                                line-height: 17px;
+                                letter-spacing: 0px;
+                                color:$SecondaryCVolor;
+                                text-align: left;
+                            }
+                        }  
+                    }
+                }
+            // .historical
+            }
+            //active
+            }
+        //from
+        }
+        &.active{
+            height: 100%;
+            overflow: hidden;
+        }
+    //Searchbar
+    }
+    & .Information{
+        padding: 16px;
+        position: relative;
+        & h5{
+            display: inline-block;
+            font-size: 36px;
+            line-height: 43px;
+            text-align: left;
+            color: $SecondaryCVolor;
+            margin-left: 8px;
+            padding-top: 8px;
+            & > span{
+                font-size: 16px;
+                line-height: 19px;
+                margin-left: 8px;
+            }
+        }
+        & .icon-question{
+            background-image: url(../images/index/ic_help@2x@2x.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            margin-left: 8px;
+        }
+        & .btn{
+            display: inline-block;
+            font-size: 14px;
+            line-height: 19px;
+            color: $white;
+            width: calc(100% - 220px);;
+            // height: 46px;
+            padding: 13px 5px 11px;
+            text-align: center;
+            background: #34495E 0% 0% no-repeat padding-box;
+            border-radius: 23px;
+            opacity: 1;
+            top: 50%;
+            position: absolute;
+            right: 16px;
+            margin-top: -22px;
+            outline: none;
+            &:hover{
+                background:$white;
+                color: $SecondaryCVolor;
+                box-shadow: 0px 10px 20px #34495E4D;
+                border: 1px solid $SecondaryCVolor;
+            }
+        }
+    //Information 
+    }
+    & .SearchResult{
+        padding: 16px;
+        position: relative;
+        & > p{
+            margin-left: 8px;
+            text-align: left;
+            font-size: 12px;
+            line-height: 14px;
+            letter-spacing: 0px;
+            color: $mainlyBlue;
+            opacity: 1;
+        }
+        & button{
+            font-size: 14px;
+            line-height: 17px;
+            color: $mainlyBlue;
+
+            padding: 9px 20px 7px;
+            border: 2px solid $mainlyBlue;
+            border-radius: 100px;
+            opacity: 1;
+            background-color: transparent;
+            outline: none;
+            
+            position: absolute;
+            top: 50%;
+            transform: translate(0%,-50%);
+            right: 16px;
+            &:hover{
+                background-color: $mainlyBlue;
+                color: $white;
+            }
+        }
+    //SearchResult  
+    }
+    & .itemshow{
+        padding: 0 16px;
+        & .checklist{
+            @media screen and (max-width: $md) {
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+            }
+            @media screen and (min-width: $lg) {
+                &::-webkit-scrollbar {
+                    /*滾動條整體樣式*/
+                    display: bolck;
+                    width: 10px;
+                    /*高寬分別對應橫豎滾動條的尺寸*/ 
+                    height: 100%;  
+                }
+                &::-webkit-scrollbar-thumb {
+                    /*滾動條裡面小方塊*/
+                    display: block;
+                    border-radius: 10px;
+                    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                    background: #535353;
+                }
+                &::-webkit-scrollbar-track {
+                    /*滾動條裡面軌道*/ 
+                    display: block;
+                    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                    border-radius: 10px;
+                    background:$faded;
+                }
+                max-height: calc(100vh - 270px);
+                min-height: calc(100vh - 270px);
+                overflow-y: auto;
+            }
+            
+           
+            
+        }
+
+        & .card{
+            margin-bottom: 20px;
+            position: relative;
+            padding: 16px;
+            background-color: $white;
+            box-shadow: 0px 3px 10px #0000001A;
+            border-radius: 10px;
+            opacity: 1;
+            & > .cardtop{
+                position: relative;
+                & div.nub{
+                    display: inline-block;
+                    overflow: hidden;
+                    // min-width: 150px;
+                    width: 48%;
+                    height: 92px;
+                    border-radius: 10px;
+                    opacity: 1;
+                    // background-color:$MainColor;
+                    color: $white;
+                    padding: 13px 16px 10px;
+                    position: relative;
+                    & > h4{
+                      font-size: 14px;  
+                      line-height: 17px; 
+                      margin-bottom: 16px;
+                    }
+                    & > p{
+                        font-size: 32px;  
+                        line-height: 38px;
+                        & > span{
+                            font-size: 12px;
+                            line-height: 14px;
+                            margin-left: 8px;
+                        }
+                    }
+                    & span.icon{
+                        width: 49px;
+                        height: 49px;
+                        display: block;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        position: absolute;
+                        right: -4px;
+                        top: 35px;
+                        &.icon-Tick{
+                            background-image: url(../images/index/ic_stock_full@2x@2x.png);
+                        }
+                        &.icon-Marvel{
+                            background-image: url(../images/index/ic_stock_few@2x-1@2x.png);
+                        }
+                        &.icon-Cross{
+                            background-image: url(../images/index/ic_stock_none@2x@2x.png);
+                        }
+                    //icon
+                    }
+                    &.child{
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                    }
+                    &.bg-DarkGrayish{
+                        opacity: 0.5;
+                    }
+                    
+                //nub
+                }
+                & div.error{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    // width: 97%;
+                    height: 92px;
+                    padding: 19px 80px;
+                    text-align: center;
+                    font-size: 16px;
+                    line-height: 33px;
+                    color: $white;
+                    background-color: $SecondaryCVolor;
+                    border-radius: 9px;
+                    opacity: 0.9;
+                }
+                //cardtop
+            }
+            & > .cardbottom{
+                padding-top: 16px;
+                & .ShopName{
+                    & > .line{
+                        position: absolute;
+                        left: -16px;
+                        display: inline-block;
+                        width: 4px;
+                        height: 24px;
+                        border-radius: 0px 4px 4px 0px;
+                        opacity: 1;
+                    }
+                    & > .name{
+                        display: inline-block;
+                        font-size: 16px;
+                        line-height: 19px;
+                        font-weight: bolder;
+                        color: $SecondaryCVolor;
+                        height: 22px;
+                        & .distance{
+                            margin-left: 4px;
+                            font-size: 11px;
+                            line-height: 13px; 
+                        }
+                    }
+                    & > .business{
+                        margin-left: 14px;
+                        display: inline-block;
+                        
+                        border-radius: 6px;
+                        padding: 4px 6px;
+                        text-align: left;
+                        font-size: 12px;
+                        line-height: 14px;
+                        letter-spacing: 0px;
+                        
+                        opacity: 1;
+                        &.bg-DarkCyan{
+                            background: rgba($color:$DarkCyan, $alpha: 0.1) ;
+                            color: $DarkCyan;
+                        }
+                        &.bg-SecondaryOrange{
+                            background: rgba($color: $SecondaryOrange, $alpha: 0.1) ;
+                            color: $SecondaryOrange;
+                        }
+                        &.bg-Gray{
+                            background: rgba($color: $Gray, $alpha: 0.1) ;
+                            color: $Gray;
+                        }
+                    }
+                //ShopName
+                }
+                & .ShopInformation{
+                    margin-top: 7px;
+                    padding-bottom: 22px;
+                    min-height: 150px;
+                    & > p{
+                        position: relative;
+                        padding-top: 14px;
+                        text-align: left;
+                        font-size: 14px;
+                        line-height: 17px;
+                        color: $SecondaryCVolor;
+                        opacity: 1;
+                        & span{
+                            margin-left: 10px;
+                            color: $DarkGrayish;
+                            @media screen and (min-width: $xs) {
+                                width: 65%;
+                            }
+                            @media screen and (min-width: $sm) {
+                                width: 75%;
+                            }
+                            display: inline-block;
+                        }
+                        & a{
+                            position: absolute;
+                            right: 0px;
+                            text-align: right;
+                            text-decoration: underline;
+                            letter-spacing: 0px;
+                            font-size: 12px;
+                            line-height: 14px;
+                            color: $DarkGrayish;
+                        }
+                        &.Remarks{
+                            display: inline-block;
+                            font-size: 14px;
+                            line-height: 17px;
+                        }
+                        &.Remarkstext{
+                            display: inline-block;
+                            position:absolute;
+                            color: $DarkGrayish;
+                            left: 38px;
+                            right:16px;
+                        }
+                    }
+                        
+                }
+            //cardbottom
+            }
+        //card
+        }
+        & .more{
+            padding-bottom: 52px;
+            position: relative;
+            min-height: 120px;
+            & > p{
+                font-size: 12px;
+                line-height: 14px;
+                letter-spacing: 0px;
+                color: $SecondaryCVolor;
+                opacity: 1;
+                margin-bottom: 12px;
+            }
+            & .seemore{
+                
+                box-shadow: 0px 10px 20px #34495E4D;
+                border-radius: 23px;
+                font-size: 16px;
+                line-height: 19px;
+                padding: 13px 44px 11px;
+
+                background-color: $SecondaryCVolor;
+                color: $white;
+                outline: none;
+            }
+            & .top{
+                display: inline-block;
+                position: absolute;
+                right: 13px;
+                bottom: 52px;
+                // padding: 12px 15px;
+                text-align: center;
+                font-size: 12px;
+                line-height: 46px;
+                width: 46px;
+                height: 46px;
+                box-shadow: 0px 10px 20px #34495E4D;
+                border-radius: 50%;
+
+                background-color: $SecondaryCVolor;
+                color: $white;
+            }
+        //more
+        }
+    //itemshow
+    }
+    & #map{
+        display: block;
+        height: calc(100vh - 66px);
+        // background-color: $SecondaryOrange;
+        .marker-cluster-small {
+            background-color: rgba(181, 226, 140, 0.6);
+            }
+        .marker-cluster-small div {
+            background-color: rgba(110, 204, 57, 0.6);
+            }
+    
+        .marker-cluster-medium {
+            background-color: rgba(241, 211, 87, 0.6);
+            }
+        .marker-cluster-medium div {
+            background-color: rgba(240, 194, 12, 0.6);
+            }
+    
+        .marker-cluster-large {
+            background-color: rgba(253, 156, 115, 0.6);
+            }
+        .marker-cluster-large div {
+            background-color: rgba(241, 128, 23, 0.6);
+            }
+    
+        .marker-cluster {
+            background-clip: padding-box;
+            border-radius: 20px;
+            }
+        .marker-cluster div {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            margin-top: 5px;
+    
+            text-align: center;
+            border-radius: 15px;
+            font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+            }
+        .marker-cluster span {
+            line-height: 30px;
+            }
+        .leaflet-popup-tip-container{
+            left: 0;
+        }
+        .leaflet-popup-close-button{
+            display: none;
+        }
+        .sblock{
+            width: 300px;
+            .content{
+               & p{
+                   padding: 0;
+                   margin: 8px 0;
+               }
+            }//content
+            & .mask{
+              margin-top: 1rem;
+              & > div{
+                border-radius: 24px;
+                padding: 5px 10px;    
+                line-height: 18px;
+                font-size: 16px;
+                letter-spacing: 0;
+                width: 48%;
+                & > span{
+                  text-align: center;
+                  line-height: 20px;
+                  font-size: 18px;
+                  width: 50px;
+                  padding: 0; 
+                  padding-left: 10px;          
+                }
+              }
+            }
+          }
+        .mask{
+            margin-top: 1rem;
+            & > div{
+                border-radius: 24px;
+                padding: 10px 25px;
+                display: inline-block;
+                line-height: 32px;
+                font-size: 18px;
+                letter-spacing: 0;
+                color: $white;
+                opacity: 1;
+                vertical-align:middle;
+                & > span{
+                    text-align: center;
+                    line-height: 32px;
+                    font-size: 26px;
+                    vertical-align:bottom;
+                    overflow: hidden;
+                    width: 75px;
+                    display: inline-block;
+
+                }
+            }
+         }//mask
+    }
+//main
+}
+
+
+
+footer{
+    background-color: $SecondaryCVolor;
+    text-align: left;
+    letter-spacing: 0px;
+    color:$white;
+    opacity: 1;
+    padding: 16px;
+    & .container{
+        padding-top: 18px;
+        padding-bottom: 14px;
+        & .Dedicated{
+            font-size: 16px;
+            line-height: 19px;
+            margin-bottom: 15px;
+        }
+        & .smalltext{
+            font-size: 12px;
+            line-height: 14px;
+        }
+        & .penname{
+            margin-top: 18px;
+            font-size: 12px;
+            line-height: 14px;
+            color: #566778;
+        }
+    }
+}
+
+
+
+#showposter{
+    display:none;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba($color: $SecondaryCVolor, $alpha: 0.89);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 90000;
+    padding: 0 25px;
+    text-align: center;
+
+    & .close{
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: 24px;
+        height: 24px;
+        padding: 11px 0px;
+        background-color: transparent;
+        content: " ";
+        background-clip: content-box;
+        outline: none;
+        &::before,&::after{
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 3px;
+            background-clip: content-box;
+            background-color: $red;
+            display: block;
+            content: " ";
+            padding: 0px;
+            transition: .25s all ease;
+            margin: 0;
+        }
+        &::before{
+            transform: translateY(-8px);
+            transform: rotate(135deg);
+            transition-delay: .2s;
+            background-color: $bgColor;
+        }
+        &::after{
+            transform: translateY(8px);
+            transform: rotate(45deg);
+            padding-left: 0px;
+            transition-delay: .2s;
+            background-color: $bgColor;
+        }
+        &:hover{
+            transform: scale(1.5);
+        }
+    }
+    & h3{
+        font-size: 36px;
+        line-height: 43px;
+        text-align: left;
+        letter-spacing: 0px;
+        color: $white;
+        margin-top: 92px;
+        position: relative; 
+        & span{
+            height: 14px;
+            font-size: 12px;
+            line-height: 14px;
+            padding: 4px 8px ;
+            border-radius: 4px;
+            background-color: $VividOrange;
+            margin-right: 8px;
+            top: -7px;
+            font-weight: 100;
+        }
+    }
+    & img{
+        margin-top: 21px;
+        width: 100%;
+        margin-bottom: 12px;
+        max-height: 600px;
+    }
+    & .btn{
+        text-align: center;
+        display: inline-block;
+        margin-top: 20px;
+        width: 100%;
+        padding: 16px ;
+        border: 2px solid $white;
+        color: $white;
+        background-color: transparent;
+        border-radius: 27px;
+        outline: none;
+        font-size: 16px;
+        line-height: 19px;
+        &:hover{
+            background-color: $white;
+            color: $SecondaryCVolor;
+        }
+    }
+}

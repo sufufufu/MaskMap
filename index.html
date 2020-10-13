@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaskMap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css">
+    </link>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
+    </link>
+    <link rel="stylesheet" href="css/framework.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+
+<body>
+    <div id="page" class="">
+        <input type="checkbox" id="m-ctrl" hidden>
+        <header class="container-fluid ">
+            <div class="container ">
+                <div class="row-flex mx-0 align-items-center justify-content-between">
+                    <div class="title">
+                        <h1 class="logo"></h1>
+                        <h2 class=""><span class="pl-1">口罩即時查</span></h2>
+                    </div>
+                    <div class="btn">
+                        <a class="menubtn"><label for="m-ctrl" class=""></label></a>
+                    </div>
+                </div>
+                <div class="directory text-center">
+                    <p class="situation active">口罩供給現況</p>
+                    <p class="question">口罩怎麼買</p>
+                </div>
+            </div>
+        </header>
+        <main class="container col-sm-12 col-xs-12">
+            <section class="row-block mx-0">
+                <article class="checklist col-block-xl-4 col-block-lg-5 col-block-md-12 px-0" id="app">
+                    <section class="Searchbar">
+                        <div class="from" id="from">
+                            <a class="leftbtn" v-on:click="closeFill()">&#8249;</a>
+                            <ul class="">
+                                <li class="inputbox">
+                                    <!--關閉收尋按鈕-->
+                                    <label for="m-inputbox" class="del"
+                                        v-on:click="closeFillbox(),Location = 'Currently'"
+                                        v-if="searchdata.length >= 1 && filterMaskdata.length > 0 && onSearch">
+                                    </label>
+                                    <!--目前位置按鈕-->
+                                    <label for="" class="previouspage"
+                                        v-on:click="searchbar(),onSearch='false',Location = 'Currently',searchdata='目前位置'">
+                                        <span class=" icon-left"></span>
+                                    </label>
+                                    <input type="text" class="" name="" id="address" placeholder="請輸入地址或區域"
+                                        v-model:value="searchdata"
+                                        v-on:click="openFill(),onSearch=true,Location='search'"
+                                        v-on:keyup="openChecklist(),onSearch=true,Location='search'"
+                                        v-on:keyup.enter="search(searchdata),onSearch = false,Location='search'"
+                                        @focus="Location='search',onSearch=true">
+                                </li>
+                                <div class="ovf" v-if="searchdata.length >= 1 && filterMaskdata.length > 0 && onSearch">
+                                    <li class="" v-for="(item,key) in filterMaskdata"
+                                        @click.prevent="search(item.properties.address)">
+                                        <span class="icon-Address"></span>
+                                        <p class="shopname">{{item.properties.name}}</p>
+                                        <p class="">{{item.properties.address}}</p>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                        <div class="historical">
+                            <div class="haz-line">
+                                <h3 class="">最近 5 筆搜尋</h3>
+                                <button class="reset" v-on:click="ClearSearchHistory()">清除</button>
+                            </div>
+                            <div class="historicalitem ">
+                                <ul class="mt-1 px-2">
+                                    <li class="" v-if="keywords.length === 0">
+                                        <p class="">無歷史搜尋紀錄</p>
+                                    </li>
+                                    <li class="" v-for="(item,key) in keywords" @click.prevent="
+                                    search(),Location='search';searchdata=item;" :key="key">
+                                        <p class="">{{item}}</p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </section>
+                    <section class="Information /d-none">
+                        <h5 class="">{{receiveNub}}<span class="">購買日</span></h5>
+                        <span class="icon-question" id="question" v-on:click="openposter"></span>
+                        <a class="btn" href="https://emask.taiwan.gov.tw/msk/index.jsp">口罩線上預購</a>
+                    </section>
+                    <section class="SearchResult /d-none">
+                        <p class="" v-if="Location !='search'">目前位置&nbsp;距離方圓&nbsp;<span
+                                class="">5&nbsp;公里</span>&nbsp;以內的供應商
+                        </p>
+                        <p class="" v-else>{{searchdata.substr(0 ,13)}}&nbsp;&nbsp;附近的供應商</p>
+                        <p class="">資訊更新時間 <span class="">{{uptime}}</span></p>
+                        <button class="" v-on:click="getData()">重整列表</button>
+                    </section>
+                    <section class="itemshow /d-none">
+                        <div class="row-block mx-0">
+                            <div class="checklist">
+                                <span id="gotop"></span>
+
+                                <div is="maskcard" :card-item="item" :gpsdata="userPosition"
+                                    v-for="(item,key) in filterMaskdata" v-if="key<openNub" @itemname="gotomap">
+                                </div>
+
+                                <div class="text-center my-5" v-if="filterMaskdata.length == 0">
+                                    <h2 class="p">沒有任何資料</h2>
+                                </div>
+                                <article class="more text-center">
+                                    <p class="text-center">尚有&nbsp;
+                                        <span
+                                            class="">{{filterMaskdata.length - openNub >= 0 ? filterMaskdata.length - openNub : 0}}</span>
+                                        &nbsp;筆</p>
+                                    <button class="seemore" v-on:click="openNub += 5"
+                                        v-if="(filterMaskdata.length - openNub)>0">查看更多</button>
+                                    <a href="#gotop" class="top">TOP</a>
+                                </article>
+                            </div>
+
+                    </section>
+                </article>
+                <article
+                    class="map col-block-xl-8 col-block-lg-7 col-block-md-12 d-lg-block d-md-none d-sm-none d-xs-none"
+                    id="map">
+                </article>
+            </section>
+        </main>
+        <footer class="/d-none">
+            <div class="container-fluid">
+                <div class="container">
+                    <p class="Dedicated">
+                        <a href="tel://1922" class="mr-1">防疫專線 1922</a>
+                        <span class="">|</span>
+                        <a href="tel://1919" class="ml-1">口罩資訊 1919</a>
+                    </p>
+                    <p class="smalltext">感謝藥師們的辛勞及所有為本次疫情付出的人們 </p>
+                    <p class="smalltext">
+                        購買口罩請多體諒藥師&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一起共度疫情</p>
+                    <h6 class="penname">
+                        <span class="mr-2">六角學院 F2E-前端修練精神時光屋&nbsp;&nbsp;|&nbsp;&nbsp;口罩地圖練習</span>
+                        SU HSI-FU / 設計師：PY Design
+                    </h6>
+                </div>
+            </div>
+        </footer>
+        <div class="" id="showposter">
+            <div class="container">
+                <button class="close"></button>
+                <h3 class=""><span class="">New</span>口罩實名制2.0</h3>
+                <img src="images/index/5@2x.png" alt="" class="">
+                <a class="btn" href="https://emask.taiwan.gov.tw/msk/index.jsp">立即線上預購</a>
+                <a class="btn" href="https://www.nhi.gov.tw/Content_List.aspx?n=F834AD6472551F9A">下次可購買日試算</a>
+            </div>
+        </div>
+        <!--page-->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <script src="js/all.js"></script>
+</body>
+
+</html>
