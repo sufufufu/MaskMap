@@ -111,16 +111,9 @@ Vue.component('maskcard', {
             dis: 0,
         };
     },
-    methods() {
-        const vm = this;
-        vm.maskAdultClass = '';
-        vm.maskAdultIconClass = '';
-        vm.maskChildClass = '';
-        vm.maskChildIconClass = '';
-    },
     created() {
         // 城市空汙顏色
-        this.adultClass(this.cardItem.properties.mask_adult);
+        this.adultClass();
         this.childClass();
         this.distance();
         this.isOpening(this.cardItem.properties.service_periods, this.cardItem.properties.name);
@@ -129,14 +122,13 @@ Vue.component('maskcard', {
         cardFun: function () {
             this.$emit("itemname", this.cardItem);
         },
-        adultClass: function (e) {
+        adultClass: function () {
             this.maskAdultClass = "";
             this.maskAdultIconClass = "";
-            if (e >= 200) {
-                console.log(e);
+            if (this.cardItem.properties.mask_adult >= 200) {
                 this.maskAdultClass = "bg-MainColor";
                 this.maskAdultIconClass = "icon-Tick";
-            } else if (e > 0) {
+            } else if (this.cardItem.properties.mask_adult > 0) {
                 this.maskAdultClass = "bg-VividOrange";
                 this.maskAdultIconClass = "icon-Marvel";
             } else {
@@ -148,7 +140,6 @@ Vue.component('maskcard', {
             this.maskChildClass = "";
             this.maskChildIconClass = "";
             if (this.cardItem.properties.mask_child >= 200) {
-                console.log(this.cardItem.properties.mask_child);
                 this.maskChildClass = "bg-MainColor";
                 this.maskChildIconClass = "icon-Tick";
             } else if (this.cardItem.properties.mask_child > 0) {
@@ -166,10 +157,6 @@ Vue.component('maskcard', {
             const lat1 = this.gpsdata[0];
             const lng2 = this.cardItem.geometry.coordinates[0];
             const lat2 = this.cardItem.geometry.coordinates[1];
-            const NowNTUlng = Math.floor(lng1 * 100000);
-            const NowNTUlat = Math.floor(lat1 * 100000);
-            const shopNTUlng = Math.floor(lng2 * 100000);
-            const shopNTUlat = Math.floor(lat2 * 100000);
             // console.log(lat1, lng1, lat2, lng2);
             const radLat1 = lat1 * Math.PI / 180.0;
             const radLat2 = lat2 * Math.PI / 180.0;
@@ -240,7 +227,7 @@ Vue.component('maskcard', {
                     // console.log('name' + name);
                     // console.log('night' + night);
                     // console.log('nowtime:' + night[today - 1]);
-                    if (night[today - 1] === 'N') {
+                    if (night[today - 1] === 'Y') {
                         this.BusinessClass["bg-Gray"] = true;
                         this.Businessname = "休息中";
                     } else {
@@ -273,7 +260,7 @@ map.setMaxBounds(bounds);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
-var markers = new L.MarkerClusterGroup().addTo(map);
+
 // vue
 
 var app = new Vue({
@@ -461,9 +448,6 @@ var app = new Vue({
                 // console.log(showicon[i]);
                 let adultnumclass = classname(showicon[i].properties.mask_adult);
                 let childnumclass = classname(showicon[i].properties.mask_child);
-
-
-
                 markers.addLayer(L.marker([showicon[i].geometry.coordinates[1], showicon[i].geometry.coordinates[0]])
                     .bindPopup(`
                     <div class='sblock' id='mask${showicon[i].properties.id}'>
@@ -504,6 +488,7 @@ var app = new Vue({
                     data = getMask.filter((pharmacy) => {
                         return `${pharmacy.properties.name} ${pharmacy.properties.address} `.includes(vm.searchdata)
                     });
+                    data.sort((a, b) => vm.Calculation5km(a.geometry.coordinates) - vm.Calculation5km(b.geometry.coordinates));
                     if (data.length <= 5) {
                         vm.openNub = data.length;
                     } else {
