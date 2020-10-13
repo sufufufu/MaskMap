@@ -61,17 +61,17 @@ Vue.component('maskcard', {
     template: `
     <div class="card" >
         <div class="cardtop">
-            <div class="nub adult" :class="maskAdultClass">
+            <div class="nub adult" :class="[maskAdultClass]">
                 <h4 class="">成人口罩數量</h4>
                 <p class="masks">{{cardItem.properties.mask_adult}}<span class="">片</span></p>
-                <span class="icon" :class="maskAdultIconClass"></span>
+                <span class="icon" :class="[maskAdultIconClass]"></span>
             </div>
-            <div class="nub child" :class="maskChildClass">
+            <div class="nub child" :class="[maskChildClass]">
                 <h4 class="">兒童口罩數量</h4>
                 <p class="masks">{{cardItem.properties.mask_child}}<span class="">片</span></p>
-                <span class="icon" :class="maskChildIconClass"></span>
+                <span class="icon" :class="[maskChildIconClass]"></span>
             </div>
-            <div class="error d-none">
+            <div class="error" v-if="cardItem.properties.mask_adult == null || cardItem.properties.mask_child == null">
                 <p class="">Oops! 資料迷路中... <br><br>稍後回來</p>
             </div>
         </div>
@@ -104,32 +104,23 @@ Vue.component('maskcard', {
                 "bg-Gray": false,
             },
             Businessname: '',
-            maskAdultClass: {
-                "bg-MainColor": false,
-                "bg-VividOrange": false,
-                "bg-DarkGrayish": false,
-            },
-            maskAdultIconClass: {
-                "icon-Tick": false,
-                "icon-Marvel": false,
-                "icon-Cross": false,
-            },
-            maskChildClass: {
-                "bg-MainColor": false,
-                "bg-VividOrange": false,
-                "bg-DarkGrayish": false,
-            },
-            maskChildIconClass: {
-                "icon-Tick": false,
-                "icon-Marvel": false,
-                "icon-Cross": false,
-            },
+            maskAdultClass: '',
+            maskAdultIconClass: '',
+            maskChildClass: '',
+            maskChildIconClass: '',
             dis: 0,
         };
     },
+    methods() {
+        const vm = this;
+        vm.maskAdultClass = '';
+        vm.maskAdultIconClass = '';
+        vm.maskChildClass = '';
+        vm.maskChildIconClass = '';
+    },
     created() {
         // 城市空汙顏色
-        this.adultClass();
+        this.adultClass(this.cardItem.properties.mask_adult);
         this.childClass();
         this.distance();
         this.isOpening(this.cardItem.properties.service_periods, this.cardItem.properties.name);
@@ -138,28 +129,34 @@ Vue.component('maskcard', {
         cardFun: function () {
             this.$emit("itemname", this.cardItem);
         },
-        adultClass: function () {
-            if (this.cardItem.properties.mask_adult >= 200) {
-                this.maskAdultClass["bg-MainColor"] = true;
-                this.maskAdultIconClass["icon-Tick"] = true;
-            } else if (this.cardItem.properties.mask_adult > 0) {
-                this.maskAdultClass["bg-VividOrange"] = true;
-                this.maskAdultIconClass["icon-Marvel"] = true;
+        adultClass: function (e) {
+            this.maskAdultClass = "";
+            this.maskAdultIconClass = "";
+            if (e >= 200) {
+                console.log(e);
+                this.maskAdultClass = "bg-MainColor";
+                this.maskAdultIconClass = "icon-Tick";
+            } else if (e > 0) {
+                this.maskAdultClass = "bg-VividOrange";
+                this.maskAdultIconClass = "icon-Marvel";
             } else {
-                this.maskAdultClass["bg-DarkGrayish"] = true;
-                this.maskAdultIconClass["icon-Cross"] = true;
+                this.maskAdultClass = "bg-DarkGrayish";
+                this.maskAdultIconClass = "icon-Cross";
             }
         },
         childClass: function () {
+            this.maskChildClass = "";
+            this.maskChildIconClass = "";
             if (this.cardItem.properties.mask_child >= 200) {
-                this.maskChildClass["bg-MainColor"] = true;
-                this.maskChildIconClass["icon-Tick"] = true;
+                console.log(this.cardItem.properties.mask_child);
+                this.maskChildClass = "bg-MainColor";
+                this.maskChildIconClass = "icon-Tick";
             } else if (this.cardItem.properties.mask_child > 0) {
-                this.maskChildClass["bg-VividOrange"] = true;
-                this.maskChildIconClass["icon-Marvel"] = true;
+                this.maskChildClass = "bg-VividOrange";
+                this.maskChildIconClass = "icon-Marvel";
             } else {
-                this.maskChildClass["bg-DarkGrayish"] = true;
-                this.maskChildIconClass["icon-Cross"] = true;
+                this.maskChildClass = "bg-DarkGrayish";
+                this.maskChildIconClass = "icon-Cross";
             }
         },
         distance: function () {
@@ -238,12 +235,12 @@ Vue.component('maskcard', {
                         this.BusinessClass["bg-DarkCyan"] = true;
                         this.Businessname = "營業中";
                     };
-                } else if (hour >= 18 < 22) {
+                } else if (hour >= 18 && hour < 22) {
                     // 晚上 18~21
                     // console.log('name' + name);
                     // console.log('night' + night);
                     // console.log('nowtime:' + night[today - 1]);
-                    if (night[today - 1] === 'Y') {
+                    if (night[today - 1] === 'N') {
                         this.BusinessClass["bg-Gray"] = true;
                         this.Businessname = "休息中";
                     } else {
@@ -265,7 +262,7 @@ Vue.component('maskcard', {
 
 const bounds = new L.LatLngBounds(new L.LatLng(25.799891182088334, 126.70532226562501), new L.LatLng(21.468405577312012, 116.15844726562501));
 let map = L.map('map', {
-    center: [22.604799, 120.2976256],
+    center: [25.033671, 121.564427],
     zoom: 15,
     minZoom: 3,
     maxZoom: 18,
@@ -277,7 +274,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 var markers = new L.MarkerClusterGroup().addTo(map);
-
 // vue
 
 var app = new Vue({
@@ -460,15 +456,18 @@ var app = new Vue({
                     return "bg-DarkGrayish";
                 }
             }
-
+            let markers = new L.MarkerClusterGroup().addTo(map);
             for (let i = 0; showicon.length > i; i++) {
                 // console.log(showicon[i]);
                 let adultnumclass = classname(showicon[i].properties.mask_adult);
                 let childnumclass = classname(showicon[i].properties.mask_child);
+
+
+
                 markers.addLayer(L.marker([showicon[i].geometry.coordinates[1], showicon[i].geometry.coordinates[0]])
                     .bindPopup(`
-                    <div class='sblock'>
-                        <div id='${showicon[i].properties.id}' class='content'>
+                    <div class='sblock' id='mask${showicon[i].properties.id}'>
+                        <div  class='content'>
                             <h3 class='shopname' >${showicon[i].properties.name}</h3 >
                         </div>
                         <div class='mask'>
@@ -493,7 +492,7 @@ var app = new Vue({
         filterMaskdata() {
             //過濾
             const vm = this;
-            let data;
+            let data = [];
             if (vm.maskdata) {
                 if (vm.Location === 'search' && vm.searchdata) {
                     // 使用關鍵字搜尋，取得所有位置
@@ -525,6 +524,7 @@ var app = new Vue({
                         // return true
                         return dis <= 5;
                     });
+                    data.sort((a, b) => vm.Calculation5km(a.geometry.coordinates) - vm.Calculation5km(b.geometry.coordinates));
                     // console.log(data);
                     if (data.length <= 5) {
                         vm.openNub = data.length;

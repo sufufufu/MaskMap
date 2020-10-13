@@ -107,7 +107,8 @@
                                 <span id="gotop"></span>
 
                                 <div is="maskcard" :card-item="item" :gpsdata="userPosition"
-                                    v-for="(item,key) in filterMaskdata" v-if="key<openNub" @itemname="gotomap">
+                                    v-for="(item,key) in filterMaskdata" v-if="key<openNub" :key="item.properties.id"
+                                    @itemname="gotomap">
                                 </div>
 
                                 <div class="text-center my-5" v-if="filterMaskdata.length == 0">
