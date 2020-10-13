@@ -59,7 +59,7 @@ $('section.Searchbar > .from ul > li > .del').on('click', function () {
 Vue.component('maskcard', {
     props: ['cardItem', 'gpsdata'],
     template: `
-    <div class="card" @click.prevent="cardFun">
+    <div class="card" >
         <div class="cardtop">
             <div class="nub adult" :class="maskAdultClass">
                 <h4 class="">成人口罩數量</h4>
@@ -76,7 +76,7 @@ Vue.component('maskcard', {
             </div>
         </div>
         <div class="cardbottom">
-            <div class="ShopName">
+            <div class="ShopName" @click.prevent="cardFun">
                 <span class="line" :class="BusinessClass"></span>
                 <h3 class="name">{{cardItem.properties.name}}<span class="distance">{{dis}} km</span></h3>
                 <p class="business" :class="BusinessClass">{{Businessname}}</p>
