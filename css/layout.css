@@ -853,7 +853,6 @@ main .itemshow .more .top {
 }
 
 main #map {
-  display: block;
   height: calc(100vh - 66px);
 }
 

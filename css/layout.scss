@@ -799,7 +799,6 @@ main{
     //itemshow
     }
     & #map{
-        display: block;
         height: calc(100vh - 66px);
         // background-color: $SecondaryOrange;
         .marker-cluster-small {
